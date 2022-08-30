@@ -37,4 +37,6 @@
 *.out
 *.app
 
-
+cp1
+extra
+.vscode/*

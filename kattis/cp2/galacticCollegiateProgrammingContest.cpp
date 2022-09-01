@@ -8,6 +8,18 @@ using ll = long long;
 // ll is kinda op pog use it ALWAYS
 // #define PI 3.1415926535897932384626433832795
 
+bool compare(pair<int, pair<int, int> >& a, pair<int, pair<int, int> >& b) {
+  // solving more problems is better
+  if (a.second.first > b.second.first) {
+    return true;
+  }
+  if (a.second.first < b.second.first) {
+    return false;
+  }
+  // same # problems means less penalty is better
+  return a.second.second < b.second.second;
+}
+
 int main() {
   std::ios::sync_with_stdio(false);
   cin.tie(0); cout.tie(0);
@@ -21,7 +33,10 @@ int main() {
   // nums.reserve(N);
 
   // maps team number to pair<# problems solved, total penalty>
-  map<int, pair<int, int> > teamData;
+  // map<int, pair<int, int> > teamData;
+  unordered_map<int, pair<int, int> > teamData;
+
+  
 
   for (int i = 0; i < numberOfEvents; i++) {
     int teamNumber, penalty;
@@ -38,10 +53,38 @@ int main() {
       teamData[teamNumber].second += penalty;
     }
 
-    cout << "printing teams: \n";
-    for (pair<int, pair<int, int> > team : teamData) {
-      cout << "team number " << team.first << " problems solved " << team.second.first << " penalty " << team.second.second << endl;
+    // cout << "printing teams: \n";
+    // for (pair<int, pair<int, int> > team : teamData) {
+    //   cout << "team number " << team.first << " problems solved " << team.second.first << " penalty " << team.second.second << endl;
+    // }
+
+    pair<int, int> team1Data = teamData[1];
+
+    vector<pair<int, pair<int, int> > > teamDataVector;
+    for (auto& it : teamData) {
+      teamDataVector.push_back(it);
     }
+
+    sort(teamDataVector.begin(), teamDataVector.end(), compare);
+
+    // cout << "printing teams from vector: \n";
+    // for (pair<int, pair<int, int> > team : teamDataVector) {
+    //   cout << "team number " << team.first << " problems solved " << team.second.first << " penalty " << team.second.second << endl;
+    // }
+
+    int rank = 1;
+    for (auto& it : teamDataVector) {
+      // if this team has the same score as team 1, then break
+      if (it.second.first == team1Data.first && it.second.second == team1Data.second) {
+        break;
+      }
+      rank++;
+      // otherwise we must be looking at a team that is better than team 1 so add 1 rank
+      
+    }
+
+    cout << rank << '\n';
+
 
   }
 

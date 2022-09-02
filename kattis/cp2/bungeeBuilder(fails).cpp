@@ -29,6 +29,8 @@ int main() {
     int h;
     cin >> h;
 
+    cout << "new h: " << h << endl;
+
     if (count == 0) {
       tallest2Mountains.push_back(make_pair(i, h));
       count++;
@@ -41,6 +43,7 @@ int main() {
       if (h < tallest2Mountains.back().second) {
         tallest2Mountains.push_back(make_pair(i, h));
         shortestInThisWindow = h;
+        cout << "update shortest: " << shortestInThisWindow << endl;
         count++;
         continue;
       }
@@ -49,6 +52,7 @@ int main() {
       tallest2Mountains.clear();
       tallest2Mountains.push_back(make_pair(i, h));
       shortestInThisWindow = -1;
+        cout << "update shortest: " << shortestInThisWindow << endl;
       // count = 1; is alr 1
       continue;
     }
@@ -58,6 +62,7 @@ int main() {
       int bridgeHeight = tallest2Mountains.front().second;
       if (shortestInThisWindow != -1) {
         int jumpHeight = bridgeHeight - shortestInThisWindow;
+        cout << "update shortest: " << shortestInThisWindow << endl;
         if (jumpHeight > bestAnswer) bestAnswer = jumpHeight;
       }
 
@@ -65,7 +70,10 @@ int main() {
       tallest2Mountains.clear();
       tallest2Mountains.push_back(make_pair(i, h));
       shortestInThisWindow = -1;
+        cout << "update shortest: " << shortestInThisWindow << endl;
       count = 1;
+
+      cout << "tallest mountains: " << tallest2Mountains.back().second << " " << tallest2Mountains.front().second << endl;
 
       continue;
 
@@ -78,11 +86,14 @@ int main() {
       int bridgeHeight = h;
       if (shortestInThisWindow != -1) {
         int jumpHeight = bridgeHeight - shortestInThisWindow;
+        cout << "update shortest: " << shortestInThisWindow << endl;
         if (jumpHeight > bestAnswer) bestAnswer = jumpHeight;
       }
 
       tallest2Mountains.back().first = i;
       tallest2Mountains.back().second = h;
+
+      cout << "tallest mountains: " << tallest2Mountains.back().second << " " << tallest2Mountains.front().second << endl;
 
       continue;
     }
@@ -90,9 +101,10 @@ int main() {
     // if neither, then we see if this is the shortest so far and continue
     if (shortestInThisWindow == -1 || h < shortestInThisWindow) {
       shortestInThisWindow = h;
+        cout << "update shortest: " << shortestInThisWindow << endl;
     }
-    
 
+    cout << "tallest mountains: " << tallest2Mountains.back().second << " " << tallest2Mountains.front().second << endl;
 
   }
 
@@ -121,3 +133,8 @@ int main() {
 // if the 2 tallest mountains are the same height, just treat the new one as taller and restart the window
 
 // and yeah thats it!
+
+// okay so it works but for only so many cases.. so we missed an edge case
+// possible edge cases: 
+  // something to do with the new mountain being the same height as one of the previous tallest mountains
+  // maybe i did count = 1 but didnt set the shortest to that 

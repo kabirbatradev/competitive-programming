@@ -1,0 +1,47 @@
+1
+5
+a b c d e
+3
+b a 
+c a
+d c
+
+20
+a d b c e
+
+
+1
+5
+a b c d e
+3
+b a 
+c a
+d b
+
+20
+a d c b e
+
+
+
+
+1
+5
+a b c d e
+4
+b a 
+c a
+d b
+c d
+
+8
+a d e b c
+
+
+
+
+1
+5
+a b c d e
+1
+d e
+FAILS

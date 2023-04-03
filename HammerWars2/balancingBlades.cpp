@@ -42,5 +42,7 @@ int main() {
   
   // maybe i could have brute forced try every combination?
   // maybe i could have greedy? is that not the same as sorting though?
+
+  // i just needed to use long long lol
   
 }

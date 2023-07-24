@@ -47,6 +47,7 @@ public:
 
                     // create a deep copy of the left and right trees
                     // it seems we did not have to make a deep copy...
+                    // this is because we are treating the subtrees as read-only
 
                     root->left = leftRoot;
                     root->right = rightRoot;

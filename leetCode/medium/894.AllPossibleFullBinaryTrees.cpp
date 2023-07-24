@@ -11,23 +11,24 @@
  */
 class Solution {
 public:
+    vector<TreeNode*> dp[21];
     vector<TreeNode*> allPossibleFBT(int n) {
 
-        // we should definitely memoize
+        // even though I used memoization, it isn't any faster
+        if (dp[n].size() > 0) 
+            return dp[n];
 
         if (n % 2 == 0) {
             return vector<TreeNode*>();
         }
 
         // one node for the root
-        
         n--;
 
         if (n == 0) {
             // if no remaining nodes
-            return vector<TreeNode*>({new TreeNode()});
+            return {new TreeNode()};
         }
-        // return vector<TreeNode*>({new TreeNode()});
 
         vector<TreeNode*> allTrees;
         // try every combination of left and right nodes
@@ -43,8 +44,9 @@ public:
                 for (TreeNode *rightRoot : rightList) {
                     // create a new root
                     TreeNode *root = new TreeNode();
+
                     // create a deep copy of the left and right trees
-                    // todo
+                    // it seems we did not have to make a deep copy...
 
                     root->left = leftRoot;
                     root->right = rightRoot;
@@ -52,7 +54,7 @@ public:
                 }
             }
         }
-        
+        dp[n] = allTrees;
 
         return allTrees;
 

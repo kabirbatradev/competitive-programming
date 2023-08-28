@@ -24,7 +24,7 @@ public:
 
         pair<int, int> currentInterval = make_pair(left, right);
 
-        counter += right - left + 1;
+        // counter += right - left + 1;
 
         // let min and max be left and right
 
@@ -44,22 +44,23 @@ public:
                 // intervals.erase(intervals.begin() + index);
                 it = intervals.erase(it);
                 
-                int overlapSize = 0;
-                // prev starts before
-                if (prevInterval.first < currentInterval.first) {
-                    overlapSize = 
-                        min(currentInterval.second, prevInterval.second) 
-                        - currentInterval.first
-                        + 1;
-                }
-                // prev starts in the middle
-                else {
-                    overlapSize = 
-                        min(prevInterval.second, currentInterval.second) 
-                        - prevInterval.first
-                        + 1;
-                }
-                counter -= overlapSize;
+                // int overlapSize = 0;
+                // // prev starts before
+                // if (prevInterval.first < currentInterval.first) {
+                //     overlapSize = 
+                //         min(currentInterval.second, prevInterval.second) 
+                //         - currentInterval.first
+                //         + 1;
+                // }
+                // // prev starts in the middle
+                // else {
+                //     overlapSize = 
+                //         min(prevInterval.second, currentInterval.second) 
+                //         - prevInterval.first
+                //         + 1;
+                // }
+                // counter -= overlapSize;
+                counter -= prevInterval.second - prevInterval.first + 1;
 
             }
             else {
@@ -73,6 +74,7 @@ public:
 
         // intervals.push_back(make_pair(left, right));
         intervals.insert(make_pair(left, right));
+        counter += right - left + 1;
     }
     
     int count() {

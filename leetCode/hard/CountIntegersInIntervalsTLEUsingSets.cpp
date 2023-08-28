@@ -31,7 +31,6 @@ public:
         // int index = 0;
         // while (index < intervals.size()) {
         
-        bool atLeastOneOverlap = false;
         auto it = intervals.begin();
         while (it != intervals.end()) {
 
@@ -39,8 +38,6 @@ public:
             pair<int, int> prevInterval = *it;
 
             if (overlap(currentInterval, prevInterval)) {
-                atLeastOneOverlap = true;
-
                 left = min(left, prevInterval.first);
                 right = max(right, prevInterval.second);
                 
@@ -66,11 +63,8 @@ public:
 
             }
             else {
-                // if there was no overlap but we overlapped a previous interval, then 
-                // just break out of the loop 
-                if (atLeastOneOverlap) {
-                    break;
-                }
+                // if prev is after current, then all of the rest of prev will be after current
+                if (prevInterval.first > currentInterval.second) break;
 
                 it++;
                 // index++;

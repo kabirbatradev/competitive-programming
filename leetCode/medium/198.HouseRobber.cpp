@@ -4,14 +4,16 @@ public:
     int rob(vector<int>& nums) {
         if (nums.size() == 1) return nums[0];
 
-        int arr[nums.size()];
+        int prevTwo[2];
+        prevTwo[0] = nums[0];
+        prevTwo[1] = max(nums[1], prevTwo[0]);
 
-        arr[0] = nums[0];
-        arr[1] = max(nums[1], arr[0]);
         for (int i = 2; i < nums.size(); i++) {
-            arr[i] = max(nums[i] + arr[i-2], arr[i-1]);
+            int next = max(nums[i] + prevTwo[0], prevTwo[1]);
+            prevTwo[0] = prevTwo[1];
+            prevTwo[1] = next;
         }
 
-        return arr[nums.size()-1];
+        return prevTwo[1];
     }
 };

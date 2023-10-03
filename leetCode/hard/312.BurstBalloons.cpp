@@ -7,7 +7,6 @@ public:
         // input to table is left and right pointer describing a range we need to find the optimal solution for
         int dp[nums.size()][nums.size()];
 
-        // initialize dp (TODO)
         // i think the edges need to be set to 1 so whenever we ask for dp of the edge, it just returns 1
         for (int i = 0; i < nums.size(); i++) {
             for (int j = 0; j < nums.size(); j++) {
@@ -29,8 +28,6 @@ public:
         for (int rangeSize=0; rangeSize < n; rangeSize++) {
             for (int startNum = 0+1; startNum + rangeSize < n+1; startNum++) {
                 int endNum = startNum+rangeSize;
-
-                // cout << startNum << "\t" << endNum << endl;
 
                 // should compute this in advance?
                 if (rangeSize == 0) {
@@ -60,16 +57,6 @@ public:
 
             }
         }
-
-
-        // for (int i = 0; i < nums.size(); i++) {
-        //     for (int j = 0; j < nums.size(); j++) {
-        //         cout << dp[i][j] << "\t";
-        //     }
-        //     cout << endl;
-        // }
-
-
 
         // get best num from 1 to index n - 2? n-3? n-2 bc we want to skip the 1 at the end
         return dp[1][nums.size()-1 - 1];

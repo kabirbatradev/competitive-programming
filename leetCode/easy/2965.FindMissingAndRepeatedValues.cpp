@@ -7,27 +7,30 @@ public:
         int n = grid.size();
         int a;
 
-        unordered_set<int> nums;
+        vector<int> v(n*n+1, 0);
 
-        int num = 1;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
-                nums.insert(num);
-                num++;
-            }
-        }
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                if (nums.count(grid[i][j]) == 0) {
-                    a = grid[i][j];
-                }
-                else {
-                    nums.erase(nums.find(grid[i][j]));
-                }
+                v[grid[i][j]]++;
             }
         }
 
-        return {a, *nums.begin()};
+        vector<int> ret(2);
+        int both = 2;
+        for (int i = 1; i <= n*n; i++) {
+            if (v[i] == 2) {
+                ret[0] = i;
+                both--;
+                if (both == 0) break;
+            }
+            if (v[i] == 0) {
+                ret[1] = i;
+                both--;
+                if (both == 0) break;
+            }
+        }
+
+        return ret;
         
     }
 };

@@ -1,3 +1,41 @@
+// 7/19 review/attempt edit distance again
+class Solution {
+public:
+    int minDistance(string word1, string word2) {
+
+        int dp[word1.length()+1][word2.length()+1];
+
+        // base cases where one of the words is empty
+        for (int i = 0; i < word1.length()+1; i++) {
+            dp[i][0] = i;
+        }
+        for (int i = 0; i < word2.length()+1; i++) {
+            dp[0][i] = i;
+        }
+
+        for (int i = 1; i < word1.length()+1; i++) {
+        for (int j = 1; j < word2.length()+1; j++) {
+            
+            // note that i and j represent how many characters in the word we are comparing
+                // therefore, i = 1 means we should compare the first character (at index 0)
+
+            // the characters match at indeces i-1 and j-1 match
+            if (word1[i-1] == word2[j-1]) {
+                dp[i][j] = dp[i-1][j-1];
+                continue;
+            }
+
+            // 3 operation cases (when character doesnt match): 
+            dp[i][j] = 1 + min({dp[i-1][j], dp[i][j-1], dp[i-1][j-1]});
+
+        }
+        }
+
+        return dp[word1.length()][word2.length()];
+    }
+};
+
+
 class Solution {
 public:
     int minDistance(string word1, string word2) {

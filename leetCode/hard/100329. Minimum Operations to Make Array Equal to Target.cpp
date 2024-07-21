@@ -143,28 +143,35 @@ public:
         nums.push_back(0);
         target.push_back(0);
 
+        // for (int i=0; i < nums.size(); i++) {
+        //     int difference = target[i] - nums[i];
+        //     cout << difference << " ";
+        // }
+        // cout << endl << endl;
+
         for (int i=0; i < nums.size(); i++) {
-            cout << endl;
+            // cout << endl;
             int difference = target[i] - nums[i];
             int absoluteDifference = abs(difference);
-            cout << difference << " " << absoluteDifference << endl;
+            // cout << difference << " " << absoluteDifference << endl;
 
             // bool positive = difference > 0;
 
             
             // same sign
             if ((difference > 0 && mode > 0) || (difference < 0 && mode < 0)) {
-                cout << "same sign" << endl;
+                // cout << "same sign" << endl;
 
                 // are we currently rising or falling? use prevAbsoluteValue
                 bool currentlyRising = absoluteDifference - prevAbsoluteDifference > 0;
-                cout << "currentlyRising = " << currentlyRising << endl;
+                // cout << "currentlyRising = " << currentlyRising << endl;
 
                 if (subProblemRising == currentlyRising) {
                     // if still rising or still falling, then we dont really care
                     // since we only have to do things at inflection points
                     // continue;
                 }
+                
 
                 // otherwise, we switched from rising to falling or vice versa
 
@@ -176,7 +183,7 @@ public:
                     // if the new base is higher, then we do some work 
                     if (newBase > base) {
                         operationsCounter += newBase - base;
-                        cout << "adding new base " << newBase << " - " << base << endl;
+                        // cout << "adding new base " << newBase << " - " << base << endl;
 
                         higherBase = newBase;
                     }
@@ -187,7 +194,8 @@ public:
                     // do work for the previous peak:
                     // operationsCounter += peak - base;
                     operationsCounter += peak - higherBase;
-                    cout << "adding new peak " << peak << " - " << higherBase << endl;
+                    // cout << "adding new peak " << peak << " - " << higherBase << endl;
+                    peak = 0;
 
                     
                 }
@@ -198,12 +206,12 @@ public:
 
                 // should update this at the end
                 // prevAbsoluteDifference = absoluteDifference;
-
+                subProblemRising = currentlyRising; // update for next iteration
 
             }
             else {
                 // switched modes or mode is now 0
-                cout << "switched modes or mode is now 0" << endl;
+                // cout << "switched modes or mode is now 0" << endl;
 
 
                 // TODO handle case where we still havent added the operations from the latest peak
@@ -220,11 +228,12 @@ public:
                 // base = newBase;
 
                 // what if the one directly before this was a peak?
+                // can only do comparison with prev peak if the peak is reset to 0 when we do the work for it or something
                 if (prevAbsoluteDifference > peak) peak = prevAbsoluteDifference;
 
                 // do work for the previous peak
                 operationsCounter += peak - higherBase;
-                cout << "adding fall to 0 " << peak << " - " << higherBase << endl;
+                // cout << "adding fall to 0 " << peak << " - " << higherBase << endl;
                 
                 // TODO reset all the variables
                 subProblemRising = true; // reset 

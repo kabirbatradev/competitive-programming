@@ -79,7 +79,7 @@ public:
     int currentDecodePosition = 0;
 
     // Decodes your encoded data to tree.
-    TreeNode* deserialize(string data) {
+    TreeNode* deserialize(string &data) {
         // cout << "deserialize" << endl;
 
         // recursive breakdown of the data to generate the tree, the function stack represents the branch of the tree we are currently on

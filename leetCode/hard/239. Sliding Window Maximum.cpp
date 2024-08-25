@@ -1,9 +1,6 @@
 class Solution {
 public:
-    struct pair {
-        int val;
-        int index;
-    };
+
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
 
         // idea: manage window maxes using deque
@@ -14,38 +11,38 @@ public:
             // remove from front before asking for max
         // note: 
             // deque stores ints, but also we need to remember the index, so store a pair
+            // actually we can just store the index and get the value using nums anytime
         
-        deque<pair> dq;
+        deque<int> dq;
 
         // prepare first window
         int i;
         for (i = 0; i < k; i++) {
             while (!dq.empty()) {
-                if (dq.back().val < nums[i]) dq.pop_back();
+                if (nums[dq.back()] < nums[i]) dq.pop_back();
                 else break;
             }
-            dq.push_back(pair(nums[i], i));
+            dq.push_back(i);
         }
         
         vector<int> maxes;
-        maxes.push_back(dq.front().val); // add the max of the first window
+        maxes.push_back(nums[dq.front()]); // add the max of the first window
 
         // for all future possible windows
         for (; i < nums.size(); i++) {
             // remove stuff from the back 
             while (!dq.empty()) {
-                if (dq.back().val < nums[i]) dq.pop_back();
+                if (nums[dq.back()] < nums[i]) dq.pop_back();
                 else break;
             }
-            dq.push_back(pair(nums[i], i));
+            dq.push_back(i);
             // remove stuff from the start if its out of range of the new window (if the index = i -k)
-            if (dq.front().index == i-k) dq.pop_front();
+            if (dq.front() == i-k) dq.pop_front();
             // add the new max
-            maxes.push_back(dq.front().val);
+            maxes.push_back(nums[dq.front()]);
         }
 
         return maxes;
-        // return maximum;
         
     }
 };

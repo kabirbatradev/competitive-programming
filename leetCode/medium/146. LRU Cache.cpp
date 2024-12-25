@@ -1,65 +1,97 @@
+struct Node {
+    int value;
+    int key; // required to go back into map and delete
+    Node *prev = nullptr;
+    Node *next = nullptr;
+    Node(int key, int value) : key(key), value(value) {}
+};
+
 class LRUCache {
 public:
-    struct valueAndCount {
-        int val;
-        int count;
-    }; 
-    // key to value,count
-    unordered_map<int, valueAndCount> m;
-
-    // queue keeping track of order of puts (keys)
-    queue<int> q;
-
-    int cap;
+    // linked list: queue of least recently used values
+        // head: dummy node representing least recently used
+        // tail: dummy node where you can place most recently used right before
+    // map: from key to linked list node for quick access
+    Node *head;
+    Node *tail;
+    unordered_map<int, Node*> m;
+    int maxSize;
     LRUCache(int capacity) {
-
-        cap = capacity;
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
+        head->next = tail;
+        tail->prev = head;
         
+        maxSize = capacity;
     }
     
     int get(int key) {
-        if (m.count(key) == 0) return -1;
+        // cout << "get " << key << endl;
+        if (m.count(key)) {
 
-        // get counts as using; update count and add to timeline queue
-        m[key].count++;
-        q.push(key);
+            // dont forget to remove and put in the back (because the item is used)
+            // remove the node from list
+            m[key]->prev->next = m[key]->next;
+            m[key]->next->prev = m[key]->prev;
 
-        return m[key].val;
+            // assign prev and next
+            m[key]->next = tail;
+            m[key]->prev = tail->prev;
+
+            // insert it at the end
+            tail->prev->next = m[key];
+            tail->prev = m[key];
+
+            // return the value!
+            return m[key]->value;
+        }
+        return -1;
     }
     
     void put(int key, int value) {
-        // new element
-        if (m.count(key) == 0) {
-            
-            if (m.size() == cap) {
+        // cout << "put " << key << " " << value << endl;
+        // val alr exists, so just update and push to end of queue
+        if (m.count(key)) {
+            m[key]->value = value; // update value
 
-                // need to remove something first
-                while(true) {
-                    int keyToRemove = q.front();
-                    q.pop();
-                    m[keyToRemove].count--;
-                    if (m[keyToRemove].count == 0) {
-                        // this element is not in the queue timeline at all, it is the oldest 
-                        m.erase(keyToRemove); // decreases the size
-                        break;
-                    }
-                }
+            // remove the node from list
+            m[key]->prev->next = m[key]->next;
+            m[key]->next->prev = m[key]->prev;
 
-            }
+            // assign prev and next
+            m[key]->next = tail;
+            m[key]->prev = tail->prev;
 
-            // now there is "space" for new element
-            m[key] = valueAndCount(value, 1); // inserts to m, increasing the size
-            q.push(key);
+            // insert it at the end
+            tail->prev->next = m[key];
+            tail->prev = m[key];
+            return;
         }
-        else {
-            // update:
-            // update val, add to count, push to queue
-            m[key].val = value;
-            m[key].count++;
-            q.push(key);
+        // check if deletion is required
+        if (m.size() == maxSize) {
+            // delete the node at the front:
+            // int deleteVal = head->next->value;
+            // get delete key: 
+            int deleteKey = head->next->key;
+            // cout << deleteKey << endl;
+            m.erase(deleteKey);
 
+            // remove node from list
+            Node *toDelete = head->next;
+            head->next = head->next->next;
+            head->next->prev = head;
+            delete toDelete;
         }
-        
+        // otherwise/now we are free to insert
+        m[key] = new Node(key, value); // creates a new node, increases size of map
+
+        // assign prev and next
+        m[key]->next = tail;
+        m[key]->prev = tail->prev;
+
+        // insert into linked list at the end
+        tail->prev->next = m[key];
+        tail->prev = m[key];
     }
 };
 

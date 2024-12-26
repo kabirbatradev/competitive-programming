@@ -1,55 +1,40 @@
 class Solution {
 public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        // [a, b] means a has prereq b 
-        // if a has no prereqs, then indegree = 0
-        // b --> a
 
-        // make adjacency list
-        vector<vector<int>> adj;
+        vector<int> inDegree(numCourses, 0);
 
-        // make queue thing
+        vector<vector<int>> adjList(numCourses, vector<int>());
+
+        for (vector<int>& prereq : prerequisites) {
+            int start = prereq[0];
+            int end = prereq[1];
+            adjList[start].push_back(end);
+            inDegree[end]++;
+        }
+
         queue<int> q;
-
-        int inDegrees[numCourses];
-        // inDegrees = {0};
-        for (int i = 0; i < numCourses; i++) {
-            inDegrees[i] = 0;
-            // cout << inDegrees[i] << " ";
-            adj.push_back(vector<int>());
-        }
-
-        for (vector<int> req : prerequisites) {
-            // a has prereq so increase indegree of a
-            inDegrees[req.at(0)] += 1;
-            adj.at(req.at(1)).push_back(req.at(0));
-        }
-
-        for (int i = 0; i < numCourses; i++) {
-            if (inDegrees[i] == 0) {
+        for(int i = 0; i < numCourses; i++) {
+            if (inDegree[i] == 0) {
                 q.push(i);
             }
         }
 
+        int canTake = 0;
         while (!q.empty()) {
-            int nextNode = q.front();
+            int prereq = q.front();
             q.pop();
 
-            for (int adjNode : adj.at(nextNode)) {
-                inDegrees[adjNode]--;
-                if (inDegrees[adjNode] == 0) {
-                    q.push(adjNode);
+            for (int course : adjList[prereq]) {
+                inDegree[course]--;
+                if (inDegree[course] == 0) {
+                    q.push(course);
                 }
             }
-            
+            canTake++;
         }
 
-        for (int i = 0; i < numCourses; i++) {
-            if (inDegrees[i] != 0) {
-                return false;
-            }
-        }
-
-        return true;
+        return canTake == numCourses;
+        
     }
 };

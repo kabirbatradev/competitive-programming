@@ -6,65 +6,52 @@ public:
         int currentHeight = 1;
         total++; // for first rating
 
-        int decreasingChain = 1;
-
-        stack<int> s;
+        int decreasingChain = 0;
+        int peak = 1;
 
         for (int i = 1; i < ratings.size(); i++) {
             int slope = ratings[i] - ratings[i-1];
-            if (slope > 0) {
-                currentHeight++;
-                total += currentHeight;
-                decreasingChain=1;
-                s = stack<int>(); // clear stack because no longer decreasing
-            }
-            else if (slope == 0) {
-                // repeated number; can reset to 1
-                currentHeight = 1;
-                total++;
-                decreasingChain=1;
-                s = stack<int>(); // clear stack
+            if (slope < 0) {
+                decreasingChain++;
+                currentHeight = 1; 
             }
             else {
 
-                // if current height is alr 1, then we have a decreasing chain
-                if (currentHeight == 1) {
-                    // decreasingChain++;
-                    // handled below
+                // no longer decreasing
+                // walk back up decreasing chain, adding to total
+                // check height with peak (if higher, then peak needs to be updated)
+                if (decreasingChain != 0) {
+                    // for (int j = 0; j < decreasingChain; j++) {
+                    //     total += j+1;
+                    // }
+                    total += (decreasingChain+1) * decreasingChain / 2;
+                    // at peak, should be decreasingChain+1
+                    if (peak < decreasingChain+1) total += decreasingChain+1 - peak;
+
                 }
-                else {
-                    // otherwise push to stack
-                    // height is 1
-                    // chain length is 1
-                    s.push(currentHeight);
+
+                if (slope > 0) { 
+                    currentHeight++;
+                }
+                else if (slope == 0) {
+                    // repeated number; can reset to 1
                     currentHeight = 1;
-                    decreasingChain = 1;
-
-                    total += decreasingChain;
-                    continue;
                 }
 
+                total += currentHeight;
+                decreasingChain = 0;
 
+                peak = currentHeight;
 
-                // currentHeight = 1; // current height still 1
-
-
-                decreasingChain++;
-
-                if (!s.empty()) {
-                    // if stack has a height that needs to be pushed up by current decreasing chain
-                    if (s.top() == decreasingChain) {
-                        s.pop();
-                        decreasingChain++;
-                    }
-                }
-                else {
-                    // stack is empty, so nothing to worry about
-                }
-
-                total += decreasingChain;
             }
         }
+
+        // handle ending on a decreasing chain (unfortunate duplicate code)
+        if (decreasingChain != 0) {
+            total += (decreasingChain+1) * decreasingChain / 2;
+            if (peak < decreasingChain+1) total += decreasingChain+1 - peak;
+        }
+
 
         return total;
     }

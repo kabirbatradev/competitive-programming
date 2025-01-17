@@ -1,3 +1,6 @@
+// Author: Kabir batra
+// It is okay to share my code for educational purposes
+
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -56,7 +59,8 @@ int main() {
         firstStringLength = totalStringLength;
       }
       else {
-        if (firstStringLength != totalStringLength) error = true;
+        if (firstStringLength != totalStringLength) 
+          error = true;
       }
 
     } // end of reading entire picture

@@ -1,3 +1,6 @@
+// Author: Kabir batra
+// It is okay to share my code for educational purposes
+
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -13,7 +16,7 @@ int main() {
     ll Population, Rate, Food; // using longs so we dont get overflow
     cin >> Population >> Rate >> Food;
 
-    // simulate the # years needed
+    // simulate the population growth to get # years
     int years = 0;
     while (Population <= Food) {
       Population *= Rate;

@@ -41,3 +41,5 @@ extra
 .vscode/*
 
 input
+*.in
+*.out

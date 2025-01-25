@@ -5,7 +5,7 @@ vector<char> uniqueCharList;
 unordered_map<char, int> charToValue;
 unordered_set<char> firstLetters;
 vector<string> words;
-unordered_set<int> usedDigits;
+vector<bool> usedDigits(10, false);
 
 int numSolutions = 0;
 
@@ -71,10 +71,10 @@ void dfs(int charIndex) {
   for (int i = 0; i <= 9; i++) {
     // check if we should skip setting it to 0
     if (i == 0 && firstLetters.count(currChar)) continue;
-    if (usedDigits.count(i)) continue;
+    if (usedDigits[i]) continue;
     charToValue[currChar] = i;
-    usedDigits.insert(i);
+    usedDigits[i] = true;
     dfs(charIndex + 1);
-    usedDigits.erase(i);
+    usedDigits[i] = false;
   }
 }

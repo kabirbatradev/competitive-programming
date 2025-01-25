@@ -2,7 +2,9 @@
 using namespace std;
 
 vector<char> uniqueCharList;
-unordered_map<char, int> charToValue;
+unordered_set<char> uniqueCharSet;
+// unordered_map<char, int> charToValue;
+int charToValue[26];
 unordered_set<char> firstLetters;
 vector<string> words;
 vector<bool> usedDigits(10, false);
@@ -24,9 +26,9 @@ int main() {
     words.push_back(word);
     for (int i = 0; i < word.length(); i++) {
       char c = word[i];
-      if (!charToValue.count(c)) {
+      if (!uniqueCharSet.count(c)) {
         uniqueCharList.push_back(c);
-        charToValue[c] = 0;
+        uniqueCharSet.insert(c);
       }
       if (i == 0) {
         firstLetters.insert(c);
@@ -50,7 +52,7 @@ void dfs(int charIndex) {
       int wordValue = 0;
       for (int j = 0; j < word.length(); j++) {
         wordValue *= 10;
-        wordValue += charToValue[word[j]];
+        wordValue += charToValue[word[j] - 'A'];
       }
       // if not the last word
       if (i != words.size()-1) {
@@ -72,7 +74,7 @@ void dfs(int charIndex) {
     // check if we should skip setting it to 0
     if (i == 0 && firstLetters.count(currChar)) continue;
     if (usedDigits[i]) continue;
-    charToValue[currChar] = i;
+    charToValue[currChar - 'A'] = i;
     usedDigits[i] = true;
     dfs(charIndex + 1);
     usedDigits[i] = false;

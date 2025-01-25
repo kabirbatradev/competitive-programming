@@ -77,7 +77,7 @@ int main() {
     outputs.insert(current);
   }
 
-  // print all the sorted strings (note: unordered set automatically sorts)
+  // print all the sorted strings (note: ordered set automatically sorts)
   for (string s : outputs) {
     cout << s << '\n';
   }

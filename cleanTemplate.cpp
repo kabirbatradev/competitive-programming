@@ -6,8 +6,9 @@ int main() {
   cin.tie(0); cout.tie(0);
   cin.exceptions(cin.failbit);
 
-  int t; cin >> t;
-  for (int tc = 0; tc < t; tc++) {
+  int n; cin >> n;
 
+  for (int i = 0; i < n; i++) {
+    
   }
 }

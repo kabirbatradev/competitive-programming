@@ -1,10 +1,13 @@
+// Author: Kabir batra
+// It is okay to share my code for educational purposes
+
 #include<bits/stdc++.h>
 using namespace std;
 
 vector<char> uniqueCharList;
 unordered_set<char> uniqueCharSet;
 // unordered_map<char, int> charToValue;
-int charToValue[26];
+int charToValue[26]; // using an array to map char -> val is much faster 
 unordered_set<char> firstLetters;
 vector<string> words;
 vector<bool> usedDigits(10, false);
@@ -23,7 +26,12 @@ int main() {
 
   for (int i = 0; i < n; i++) {
     string word; cin >> word;
+
+    // keep track of all the words
     words.push_back(word);
+
+    // update set of all unique characters that showed up
+    // update set of all "first letters" that cannot be assigned to 0
     for (int i = 0; i < word.length(); i++) {
       char c = word[i];
       if (!uniqueCharSet.count(c)) {
@@ -36,10 +44,15 @@ int main() {
     }
   }
 
+  // start with first requesting to assign the first character
   dfs(0);
   cout << numSolutions << '\n';
   return 0;
 }
+
+// idea: assign each character to some value
+// if we found a solution, increment global counter numSolutions
+// backtrack if all characters are assigned
 
 void dfs(int charIndex) {
   // all chars have been assigned a value:
@@ -54,10 +67,11 @@ void dfs(int charIndex) {
         wordValue *= 10;
         wordValue += charToValue[word[j] - 'A'];
       }
-      // if not the last word
+      // if not the last word, then increment sum
       if (i != words.size()-1) {
         sum += wordValue;
       }
+      // if last word, then check if last word value = total sum
       else {
         if (sum == wordValue) {
           numSolutions++;
@@ -66,17 +80,19 @@ void dfs(int charIndex) {
     }
     return;
   }
-
-  // assign current char to every possible digit
+  // otherwise, not all characters have been assigned
+  // assign current (aka next) char to every possible digit
   char currChar = uniqueCharList[charIndex];
 
+  // 10 possible values to assign
   for (int i = 0; i <= 9; i++) {
-    // check if we should skip setting it to 0
+    // check if we should skip setting it to 0 because its a "first character" in a word
     if (i == 0 && firstLetters.count(currChar)) continue;
+    // skip if digit already used
     if (usedDigits[i]) continue;
-    charToValue[currChar - 'A'] = i;
-    usedDigits[i] = true;
-    dfs(charIndex + 1);
-    usedDigits[i] = false;
+    charToValue[currChar - 'A'] = i; // set the mapping char->value
+    usedDigits[i] = true; // this digit is now marked as used
+    dfs(charIndex + 1); // request to assign the next character
+    usedDigits[i] = false; // unmark digit as used to allow it to be used in other backtracking branches
   }
 }

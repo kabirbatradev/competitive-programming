@@ -1,3 +1,6 @@
+// Author: Kabir batra
+// It is okay to share my code for educational purposes
+
 #include<bits/stdc++.h>
 using namespace std;
 
@@ -9,7 +12,6 @@ int main() {
   // read the whole line instead of using cin >> ...
   string line;
   getline(cin, line);
-
 
   // create a list of tuples, where each tuple contains 
   // start and end parenthesis indeces
@@ -38,18 +40,20 @@ int main() {
   set<string> outputs;
 
   // power set algorithm: for every tuple=pair of parenthesis, we can add it or not
-  // skip i = 0 because that is the original answer
+  // i flipped things: let 0 mean include the parenthesis
+  // therefore, skip i = 0 because that means include all parenthesis = the original equation
   for (int i = 1; i < (1 << listOfTuples.size()); i++) {
-    // i is a number from 0 to 2^n
+    // i is a number from 0 to 2^n = 1 << n
     // if you read every bit, you get whether or not to include the tuple
     // read every bit:
     for (int j = 0; j < listOfTuples.size(); j++) {
-      // read the jth bit of "i"
-      int bitExtractedInt = i & (1 << j);
-      bool bitValue = bitExtractedInt != 0;
+      // read the jth bit of the int "i"
+      int bitExtractedInt = i & (1 << j); // set everything to 0 except for the jth bit
+      bool bitValue = bitExtractedInt != 0; // if that bit was 0, then the whole int is 0, so false. otherwise true
 
-      // if bitValue true, then include the jth tuple 
+      // if bitValue true, then do not include the jth tuple 
       // we can do this by removing the pair of parenthesis from the original string
+      // note: i have flipped things (if bit is 0, then that means include the parenthesis)
       if (bitValue) {
         int start = listOfTuples[j].first;
         int end = listOfTuples[j].second;
@@ -64,12 +68,11 @@ int main() {
       }
     }
 
-    // delete ' ' from the string before printing (adding to set)
+    // delete ' ' from the string before adding to set to print
     // create a new string for this
     string current;
     for (char c : line) {
       if (c != ' ') {
-        // cout << c;
         current.push_back(c);
       }
     }
@@ -82,5 +85,4 @@ int main() {
     cout << s << '\n';
   }
 
-  
 }

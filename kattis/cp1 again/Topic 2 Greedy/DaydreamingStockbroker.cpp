@@ -33,8 +33,6 @@ int main() {
     return 0;
   }
 
-
-  // initialize values for day 0 -> 1 case
   ll currMoney = 100;
   ll bestMoney = 100;
   ll currStocks = 0;
@@ -53,7 +51,6 @@ int main() {
       // then we have a minimum at day i
       // so we buy as much as possible at day i
 
-      // cout << "buy at price " << prices[i] << endl;
       currStocks = currMoney / prices[i];
       // but wait! we can't buy more than 100,000 shares!
       if (currStocks > 100000) currStocks = 100000;
@@ -68,7 +65,6 @@ int main() {
       // if switched to decreasing, 
       // then we have a peak at day i
       // so we sell everything
-      // cout << "sell at price " << prices[i] << endl;
       currMoney += currStocks * prices[i];
       currStocks = 0;
 
@@ -82,7 +78,6 @@ int main() {
   // note: we did not consider the last day
   // if we were increasing, then last day is a peak, so we should sell
   if (currentlyIncreasing) {
-    // cout << "sell at price " << prices.back() << endl;
     currMoney += currStocks * prices.back();
     currStocks = 0;
 

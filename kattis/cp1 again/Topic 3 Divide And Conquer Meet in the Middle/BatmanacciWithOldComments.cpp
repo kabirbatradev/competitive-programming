@@ -116,12 +116,19 @@ Note: the letter that the string starts with always alternates between N and A
 we can "binary search" the value of the kth letter
   by breaking the string into the 2 strings that made it, and doing that repeatedly
 
-what if we generated all n=10^5 fibonacci numbers and stored them in an array
-  then we know where to split the current string:
-    the past 2 fibonacci numbers = sizes of strings that made up this string
+  if the string length is even, then split it evenly
+  if the string length is odd, then include the middle element in the right split
+
+  wait no we cant split it in half everytime because n = 4 is ANA and n = 5 is NAANA and n = 6 is size 8, 
+  and if we split that in half, we would have 4 and 4, which is wrong 
+    ANAN and AANA both start with A, so our assumption doesnt hold
+  
+what if instead, we generated all n=10^5 fibonacci numbers and stored them in an array
+  then we could split the last number into the past 2 fibonacci numbers
+    because we know the size of the past 2
   and we can figure out in which one is k
-  and then repeatedly split that string/number
-  eventually we would figure out which fibonacci number of size=1 k is in (either s1 or s2)
+  and then repeatedly split that number
+  eventually we would figure out which fibonacci number of size= 1 k is in (either s1 or s2)
 
 algo:
   you know current fib num
@@ -134,9 +141,8 @@ algo:
       if k > first fib num, then pass in k - first fib num
 
 edge case:
-  fib number is larger than long long aka string is very long
-  then the string either starts with x or y, where x and y strings corresponding to
-    the last two fibonacci numbers before they could not be stored anymore
+  fib number is larger than long long
+  then the string either starts with x or y, where x and y are the last two fibonacci numbers before they could not be stored anymore
   so we can detect the last one that can be stored in a long long
   and then if y is the last fib number and y has the same parity as n (both even or both odd), then the string starts with y
   otherwise it starts with x

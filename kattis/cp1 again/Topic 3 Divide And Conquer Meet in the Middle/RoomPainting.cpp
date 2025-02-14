@@ -1,3 +1,6 @@
+// Author: Kabir batra
+// It is okay to share my code for educational purposes
+
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -16,7 +19,7 @@ int main() {
   }
   sort(sizesOffered.begin(), sizesOffered.end());
 
-  // for each paint size need, find the closest valid/larger size. add the difference to total paint wasted
+  // for each paint size need, find the closest valid aka larger size. add the difference to total paint wasted
   ll paintWasted = 0;
   for (int i = 0; i < m; i++) {
     int paintNeeded;
@@ -33,6 +36,8 @@ int main() {
         break; // can break early because we have the perfect size
       }
       else if (size > paintNeeded) {
+        // if this was the last paint size we looked at that was larger than the paint needed, then
+        // its the best valid size, so save it
         bestValidSize = size;
         r = mid-1;
       }

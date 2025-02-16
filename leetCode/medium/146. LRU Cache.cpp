@@ -1,97 +1,80 @@
 struct Node {
-    int value;
-    int key; // required to go back into map and delete
-    Node *prev = nullptr;
-    Node *next = nullptr;
-    Node(int key, int value) : key(key), value(value) {}
+    int key = 0, value = 0;
+    Node *prev = nullptr, *next = nullptr;
+    // Node* prev = nullptr;
+    // Node* next = nullptr;
 };
 
 class LRUCache {
 public:
-    // linked list: queue of least recently used values
-        // head: dummy node representing least recently used
-        // tail: dummy node where you can place most recently used right before
-    // map: from key to linked list node for quick access
-    Node *head;
-    Node *tail;
     unordered_map<int, Node*> m;
-    int maxSize;
+    Node* head;
+    Node* tail;
+    int cap;
+
     LRUCache(int capacity) {
-        head = new Node(0, 0);
-        tail = new Node(0, 0);
+        head = new Node();
+        tail = new Node();
         head->next = tail;
         tail->prev = head;
-        
-        maxSize = capacity;
+        cap = capacity;
     }
     
     int get(int key) {
-        // cout << "get " << key << endl;
-        if (m.count(key)) {
-
-            // dont forget to remove and put in the back (because the item is used)
-            // remove the node from list
-            m[key]->prev->next = m[key]->next;
-            m[key]->next->prev = m[key]->prev;
-
-            // assign prev and next
-            m[key]->next = tail;
-            m[key]->prev = tail->prev;
-
-            // insert it at the end
-            tail->prev->next = m[key];
-            tail->prev = m[key];
-
-            // return the value!
+        if(m.count(key)) {
+            moveToFront(m[key]);
             return m[key]->value;
         }
-        return -1;
+        else {
+            return -1;
+        }
     }
     
     void put(int key, int value) {
-        // cout << "put " << key << " " << value << endl;
-        // val alr exists, so just update and push to end of queue
-        if (m.count(key)) {
-            m[key]->value = value; // update value
-
-            // remove the node from list
-            m[key]->prev->next = m[key]->next;
-            m[key]->next->prev = m[key]->prev;
-
-            // assign prev and next
-            m[key]->next = tail;
-            m[key]->prev = tail->prev;
-
-            // insert it at the end
-            tail->prev->next = m[key];
-            tail->prev = m[key];
-            return;
+        if(m.count(key)) {
+            moveToFront(m[key]);
+            m[key]->value = value;
         }
-        // check if deletion is required
-        if (m.size() == maxSize) {
-            // delete the node at the front:
-            // int deleteVal = head->next->value;
-            // get delete key: 
-            int deleteKey = head->next->key;
-            // cout << deleteKey << endl;
-            m.erase(deleteKey);
+        else {
+            if (m.size() == cap) {
+                // have to evict last node
+                Node* last = tail->prev;
+                m.erase(last->key);
 
-            // remove node from list
-            Node *toDelete = head->next;
-            head->next = head->next->next;
-            head->next->prev = head;
-            delete toDelete;
+                // write over the last node with this new key value
+                last->key = key;
+                last->value = value;
+                m[key] = last;
+
+                moveToFront(last);
+            }
+            else {
+                // add a new node, put it in front
+                // Node* n = new Node{key, value, head, head->next}; // Does this work with less args too?
+                Node* n = new Node{key, value}; // it does work with less args
+                n->prev = head;
+                n->next = head->next;
+                head->next->prev = n;
+                head->next = n;
+
+                m[key] = n;
+            }
+
         }
-        // otherwise/now we are free to insert
-        m[key] = new Node(key, value); // creates a new node, increases size of map
+    }
 
-        // assign prev and next
-        m[key]->next = tail;
-        m[key]->prev = tail->prev;
+    void moveToFront(Node* node) {
+        Node* left = node->prev;
+        Node* right = node->next;
+        left->next = right;
+        right->prev = left;
 
-        // insert into linked list at the end
-        tail->prev->next = m[key];
-        tail->prev = m[key];
+        left = head;
+        right = head->next;
+        node->prev = head;
+        node->next = right;
+        left->next = node;
+        right->prev = node;
     }
 };
 

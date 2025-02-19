@@ -15,5 +15,6 @@ int main() {
   std::ios::sync_with_stdio(false);
   cin.tie(0); cout.tie(0);
   cin.exceptions(cin.failbit);
+  // cout.precision(10);
   Solution s;
 }

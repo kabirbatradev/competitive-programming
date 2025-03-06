@@ -1,3 +1,6 @@
+// Author: Kabir batra
+// It is okay to share my code for educational purposes
+
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -33,10 +36,13 @@ int main() {
     // for every prefix sum (skip the first '0' sum), find past prefix sums that would reach target
     const int target = 47;
     for (int i = 1; i < n+1; i++) {
+      // example for debugging:
       // printf("index = %d, prefix sum value: %d\n", i, prefixSum[i]);
+
       // for every prefix sum (index) that matches the value we need
       for (int index : m[prefixSum[i] - target]) {
         if (index > i) break; // we cannot use prefix sums that come later
+        // example for debugging:
         // printf("  found matching prefix sum at %d with value %d, subtracting prefix sums gets you %d\n", index, prefixSum[index], prefixSum[i] - prefixSum[index]);
         count++;
       }

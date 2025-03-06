@@ -1,3 +1,6 @@
+// Author: Kabir Batra
+// It is okay to share my code for educational purposes
+
 #include<bits/stdc++.h>
 using namespace std;
 using ll = long long;
@@ -26,10 +29,10 @@ int main() {
     fromBottom = !fromBottom;
   }
   
-  int minObstacles = pqBottom.size() + pqTop.size();
+  int minObstacles = pqBottom.size() + pqTop.size(); // impossible case: all walls were hit
   int numSolutions = 0;
   
-  int obstacles = pqBottom.size(); // assume we hit all bottom obstacles
+  int obstacles = pqBottom.size(); // assume we hit all bottom obstacles at height = 1 (lowest)
   // 1 through h inclusive
   for (int height = 1; height <= h; height++) {
     // if height is higher than some obstacle size, then its no longer an obstacle
@@ -44,14 +47,16 @@ int main() {
       pqTop.pop();
     }
 
+    // new best!
     if (obstacles < minObstacles) {
       minObstacles = obstacles;
       numSolutions = 1;
     }
+    // same as prev best
     else if (obstacles == minObstacles) {
       numSolutions++;
     }
-    // dont care if this case is worse
+    // dont care if this case is worse (do not change the running best)
 
     // example print statement for debugging:
     // printf("at height = %d, # obstacles = %d\n", height, obstacles);

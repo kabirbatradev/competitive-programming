@@ -25,6 +25,7 @@ struct Solution {
     strengthCombinations.push_back({sn + sn, {1, 1}});
     strengthCombinations.push_back({sn + se, {1, 2}});
     strengthCombinations.push_back({se + se, {2, 2}});
+    strengthCombinations.push_back({sb + se, {0, 2}});
     sort(strengthCombinations.begin(), strengthCombinations.end());
 
     int m = (b + n + e) / 2; // # kayaks
@@ -46,8 +47,6 @@ struct Solution {
       bool success = canFunction(mid);
       // if we can succeed with this speed lower bound, then try 
       // a higher minimum
-      cout << "success = " << success << '\n';
-
       if (success) {
         best = max(best, mid);
         low = mid+1;
@@ -62,9 +61,7 @@ struct Solution {
 
   // assign worst kayak with strongest people
   bool canFunction(int speedLowBound) {
-    printf("trying low bound = %d\n", speedLowBound);
     vector<int> counts = {b, n, e};
-    vector<int> strengths = {sb, sn, se};
     for (int c : speedFactors) {
       // v = c * (s1 + s2)
 
@@ -80,7 +77,7 @@ struct Solution {
           counts[j]--;
           if (counts[i] >= 0 && counts[j] >= 0) {
             foundSolution = true;
-            continue; // breaks out of the loop
+            break;
           }
 
           // otherwise, revert counts and try different in next iteration
@@ -100,8 +97,8 @@ struct Solution {
 };
 
 int main() {
-  // std::ios::sync_with_stdio(false);
-  // cin.tie(0); cout.tie(0);
+  std::ios::sync_with_stdio(false);
+  cin.tie(0); cout.tie(0);
   cin.exceptions(cin.failbit);
   // cout.precision(1); // # decimal places
   // cout << fixed; // force precision decimal places

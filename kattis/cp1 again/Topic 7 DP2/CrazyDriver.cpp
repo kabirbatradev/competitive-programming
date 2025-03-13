@@ -35,7 +35,7 @@ struct Solution {
       for (int pos = 0; pos < n; pos++) {
         // want to set dp[pos][t] = ...
         // skip if the gate is not open yet
-        if (openingTimes[pos] < t) continue;
+        if (t < openingTimes[pos]) continue;
 
         // otherwise
         // consider coming from next gate or prev gate

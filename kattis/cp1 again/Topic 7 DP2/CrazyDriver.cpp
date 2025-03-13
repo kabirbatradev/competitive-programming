@@ -1,5 +1,6 @@
 // Author: Kabir Batra
 // It is okay to share my code for educational purposes
+// Note: no gen AI was used for this problem
 
 #include <bits/stdc++.h>
 using namespace std;
@@ -22,6 +23,10 @@ struct Solution {
     }
 
     // # positions = # gates = n
+      // we should create a dummy position at the end so that if we can get there, that means we got through the nth gate
+      n++;
+      // we would also need a corresponding road fee of 0 
+      roadFee.push_back(0);
     // # times = max gate time + # gates if we are waiting at the first gate still + 1 if we had to do a u-turn i guess?
     // initialize dp values to INT_MAX to show impossible
     int timeSize = maxTime + n + 1;
@@ -36,7 +41,7 @@ struct Solution {
         // want to set dp[pos][t] = ...
 
         // consider coming from next gate or prev gate
-        // note that next or prev pos might not exist!
+        // note that next or prev pos might not exist! (out of bounds)
         // also note that we could have only come from the previous gate if the previous gate is open
           // specifically, if we want to go through the pos-1 gate, it had to be open 1 hr ago (or earlier), such that we could be at pos at current t
         // dont have to do this check for "from next" because we could only have been there if all prev gates are already open
@@ -57,14 +62,14 @@ struct Solution {
     }
 
     // print the entire dp table:
-    for (int t = 0; t < timeSize; t++) {
-      cout << "t = " << t << ":\t";
-      for (int pos = 0; pos < n; pos++) {
-        cout << (dp[pos][t] != INT_MAX ? to_string(dp[pos][t]) : "--") << "\t";
-      }
-      cout << endl;
-    }
-    cout << endl;
+    // for (int t = 0; t < timeSize; t++) {
+    //   cout << "t = " << t << ":\t";
+    //   for (int pos = 0; pos < n; pos++) {
+    //     cout << (dp[pos][t] != INT_MAX ? to_string(dp[pos][t]) : "--") << "\t";
+    //   }
+    //   cout << endl;
+    // }
+    // cout << endl;
 
     
     // get best dp at gate n: pos=(n-1)

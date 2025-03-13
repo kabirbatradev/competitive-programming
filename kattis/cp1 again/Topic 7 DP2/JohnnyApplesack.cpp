@@ -7,12 +7,117 @@ using namespace std;
 using ll = long long;
 
 struct Solution {
-  Solution() {
-    int n; cin >> n;
 
-    for (int i = 0; i < n; i++) {
-      
+  int n, k;
+
+  Solution() {
+    cin >> n >> k;
+    // n apples, k size bag
+
+    // binary search for farthest distance we can travel
+    // where # apples needed is less than how many we have
+
+    int farthestDistance = 0;
+    int low = 0; // min distance walked is 0 
+    int high = n; // max disatnce walked is <= apples for sure
+    while (low <= high) {
+      int mid = low + (high - low) / 2;
+
+      // how many apples are needed to reach position mid with 0 apples in hand?
+      int applesNeeded = howManyApplesNeeded(mid, 0);
+      if (applesNeeded == n) {
+        farthestDistance = mid;
+        break;
+      }
+      // need too many apples, try shorter distance
+      else if (applesNeeded > n) {
+        high = mid-1;
+      }
+      // didnt use all apples, successfully reached distance
+      else {
+        farthestDistance = mid;
+        low = mid+1;
+      }
     }
+
+    // off by one because farthestDistance = # tolls we can cross
+    // but problem wants the position of the first toll
+    // that he cannot cross
+    cout << (farthestDistance+1) << '\n';
+
+
+    // for (int i = 0; i <= 8; i++) {
+    //   cout << i << ": " << howManyApplesNeeded(i, 0) << endl;
+    // }
+    // cout << "\n\n";
+    // for (int i = 0; i <= 8; i++) {
+    //   cout << i << ": " << howManyApplesNeeded(i, 1) << endl;
+    // }
+    // cout << "\n\n";
+    // for (int i = 0; i <= 8; i++) {
+    //   cout << i << ": " << howManyApplesNeeded(i, 2) << endl;
+    // }
+    // cout << "\n\n";
+
+    // cout << "0 4 case" << ": " << howManyApplesNeeded(0, 4) << endl;
+    // cout << "1 3 case" << ": " << howManyApplesNeeded(1, 3) << endl;
+
+    // at i = 2, want 2 apples, should cost 4
+
+  }
+
+  map<pair<int, int>, int> cache;
+
+  // position is # tolls passed
+  // count is # apples that we want at this position
+  int howManyApplesNeeded(int pos, int count) {
+    // we can basically have unlimited apples at position 0
+    // because no paying for tolls
+    if (pos == 0) {
+      return count;
+    }
+    // count = 0 means count = 1 for prev position
+    // this probably would have been accommodated for anyway
+    if (count == 0) {
+      return howManyApplesNeeded(pos-1, 1);
+    }
+
+    // check cache
+    auto it = cache.find(make_pair(pos, count));
+    if (it != cache.end()) {
+      return it->second; // second is value of (key,value)
+    }
+
+    // running min:
+    int leastApplesUsed = INT_MAX;
+    // try having up to k apples in previous position to bring forward
+    // f means # apples brought forward
+    for (int f = 1; f < k; f++) {
+      if (count - f < 0) break; // dont consider negative counts
+      
+      int applesUsed = 0;
+
+      // in this case, we dont want to waste apples on bringing 0 apples to pos
+      // so we just dont add that
+      if (count - f == 0) {
+        applesUsed = howManyApplesNeeded(pos-1, f+1);
+      }
+      else {
+        applesUsed += howManyApplesNeeded(pos, count - f);
+        // at previous position, we need 1 + f apples 
+          // then we pay 1 apple
+          // and end up bringing f apples forward
+        applesUsed += howManyApplesNeeded(pos-1, f+1);
+      }
+
+      // update running min
+      leastApplesUsed = min(leastApplesUsed, applesUsed);
+    }
+
+    // update cache
+    cache[make_pair(pos, count)] = leastApplesUsed;
+
+    return leastApplesUsed;
   }
 };
 
@@ -163,7 +268,8 @@ so what is the exact recurrence relation:
 
   seems to be edge case:
     if count = 0, then 
-      we really just want dp[position-1, 2]
+      we really just want dp[position-1, 1]
+      we just want 1 apple at previous position to take that one step forward
   
 
 woohoo! i think thats at least the essense of it

@@ -34,18 +34,18 @@ struct Solution {
     for (int t = 1; t < timeSize; t++) { // starting at time = 1 because we already did time = 0
       for (int pos = 0; pos < n; pos++) {
         // want to set dp[pos][t] = ...
-        // skip if the gate is not open yet
-        if (t < openingTimes[pos]) continue;
 
-        // otherwise
         // consider coming from next gate or prev gate
         // note that next or prev pos might not exist!
+        // also note that we could have only come from the previous gate if the previous gate is open
+          // specifically, if we want to go through the pos-1 gate, it had to be open 1 hr ago (or earlier), such that we could be at pos at current t
+        // dont have to do this check for "from next" because we could only have been there if all prev gates are already open
         int fromNext = INT_MAX, fromPrev = INT_MAX;
         if (pos+1 < n) {
           fromNext = dp[pos+1][t-1];
           if (fromNext != INT_MAX) fromNext += roadFee[pos]; // add toll of road after pos
         }
-        if (pos-1 >= 0) {
+        if (pos-1 >= 0 && openingTimes[pos-1] <= t-1) {
           fromPrev = dp[pos-1][t-1];
           if (fromPrev != INT_MAX) fromPrev += roadFee[pos-1]; // add toll of road before pos
         }
@@ -55,10 +55,21 @@ struct Solution {
 
       }
     }
+
+    // print the entire dp table:
+    for (int t = 0; t < timeSize; t++) {
+      cout << "t = " << t << ":\t";
+      for (int pos = 0; pos < n; pos++) {
+        cout << (dp[pos][t] != INT_MAX ? to_string(dp[pos][t]) : "--") << "\t";
+      }
+      cout << endl;
+    }
+    cout << endl;
+
     
     // get best dp at gate n: pos=(n-1)
     int cheapest = INT_MAX;
-    for (int t = 1; t < timeSize; t++) {
+    for (int t = 0; t < timeSize; t++) { // consider all times
       cheapest = min(cheapest, dp[n-1][t]);
     }
 

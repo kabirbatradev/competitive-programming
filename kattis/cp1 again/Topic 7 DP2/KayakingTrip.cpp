@@ -1,4 +1,4 @@
-// Author: Kabir batra
+// Author: Kabir Batra
 // It is okay to share my code for educational purposes
 // link to gen AI chat history to help with debugging: 
 // https://www.perplexity.ai/search/hello-there-can-you-help-me-so-E5vmeVQFSOCvHjRJ4hFEhw

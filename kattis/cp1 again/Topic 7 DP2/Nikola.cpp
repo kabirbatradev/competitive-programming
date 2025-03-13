@@ -1,4 +1,4 @@
-// Author: Kabir batra
+// Author: Kabir Batra
 // It is okay to share my code for educational purposes
 // Note: no gen AI was used for this problem
 

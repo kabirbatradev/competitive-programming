@@ -6,12 +6,134 @@ using namespace std;
 using ll = long long;
 
 struct Solution {
-  Solution() {
-    int n; cin >> n;
+
+  map<int, vector<int>> adjList; 
+  set<int> uniqueNodes;
+
+  // node --> discovery number
+  map<int, int> discoveryNum;
+  int nextDiscoveryNum = 0;
+
+  // node --> the smallest reachable (from this node) discovery number 
+  map<int, int> smallestReachable;
+
+  // stack of nodes in current DFS/SCC
+  stack<int> s;
+
+  set<int> visited;
+  set<int> visiting; // aka inside of stack
+
+  vector<vector<int>> allSCCs;
+
+  Solution(int n) {
+    // n is # questions on the test
 
     for (int i = 0; i < n; i++) {
+      // read in the question (5 answers, one selected answer)
+      vector<int> potentialAnswers(5);
+      for (int j = 0; j < 5; j++) {
+        char c;
+        cin >> c;
+        potentialAnswers[j] = c - 'A'; // shift to integer from 0 to 25
+      }
+
+      char selectedAnswer;
+      char c;
+      cin >> c;
+      selectedAnswer = c - 'A';
+
+      // convert this to nodes and edges and populate adj list
+      // nodes: potential answers
+      // directed edges: less prefered answer --> selected answer
+      // note: not all characters will show up as potential answers
+
+      for (int p : potentialAnswers) {
+        uniqueNodes.insert(p); // update unique nodes with new potential answers
+
+        if (p == selectedAnswer) continue; // do not create edge if this was the answer selected
+
+        // create edge: p --> selectedAnswer
+        adjList[p].push_back(selectedAnswer);
+      }
+
+    }
+
+    
+
+
+    // identify SCCs:
+    // run dfs on every not visited node
+    for (int node : uniqueNodes) {
+      if (discoveryNum.count(node) != 0) continue; // node already explored
+
+      dfs(node);
+    }
+    
+
+    // SCCs are stored in vector<vector<int>>
+    // sort each individiual vector<int> first
+    // then sort vector of vectors
+    // then print all SCCs
+
+    for (vector<int>& scc : allSCCs) {
+      sort(scc.begin(), scc.end());
+    }
+    sort(allSCCs.begin(), allSCCs.end());
+
+    // print:
+    for (vector<int>& scc : allSCCs) {
+      for (int node : scc) {
+        cout << (char)(node + 'A') << " ";
+      }
+      cout << '\n';
+    }
+    
+  }
+
+  void dfs(int node) {
+    discoveryNum[node] = nextDiscoveryNum++;
+    smallestReachable[node] = discoveryNum[node]; // initial value is current node's discovery num itself
+
+    // push current node onto stack, mark as visited and visiting
+    s.push(node);
+    visiting.insert(node);
+    // visited.insert(node); replaced with existance of discoveryNum
+
+    for (int neighbor : adjList[node]) {
+      
+      if (visiting.count(neighbor)) {
+        // this neighbor is already in the stack, so we are basically reaching a node with a smaller discovery number
+        smallestReachable[node] = min(smallestReachable[node], discoveryNum[neighbor]);
+      }
+      if (discoveryNum.count(neighbor)) continue; // skip if this node is already discovered
+
+      // otherwise, dfs from this unvisited neighbor and use its smallest reachable
+      dfs(neighbor);
+      smallestReachable[node] = min(smallestReachable[node], smallestReachable[neighbor]);
       
     }
+
+    // we have an SCC if smallest reachable is still discovery num of the current node
+    // pop from stack to create new SCC
+    // otherwise, leave nodes in stack 
+
+    if (smallestReachable[node] == discoveryNum[node]) {
+      vector<int> newSCC;
+      while (true) {
+        int top = s.top(); s.pop();
+        visiting.erase(top); // dont forget to remove from visiting aka "in stack"
+        
+        newSCC.push_back(top); // all nodes in stack (up to current node) are in new SCC
+
+        if (top == node) {
+          break;
+        }
+      }
+
+      allSCCs.push_back(newSCC); // add to list of all SCCs
+    }
+
+    return;
   }
 };
 
@@ -21,7 +143,19 @@ int main() {
   cin.exceptions(cin.failbit);
   // cout.precision(1); // # decimal places
   // cout << fixed; // force precision decimal places
-  Solution s;
+
+  // create new instance of solution for each test case
+  string prefix = "";
+  while (true) {
+    int n; 
+    cin >> n;
+    if (n == 0) break;
+
+    cout << prefix; // new line after every test case except last
+    prefix = "\n";
+
+    Solution s(n);
+  }
 }
 
 /*
@@ -36,7 +170,7 @@ goal:
   make the minimum number of sets possible
 
 how to represent as a graph:
-  node: answer choices aka activities
+  node: answer choices aka activities (integer from 0 to 25)
   directed edge: from activity to more prefered activity
 
 graph question: identify SCCs

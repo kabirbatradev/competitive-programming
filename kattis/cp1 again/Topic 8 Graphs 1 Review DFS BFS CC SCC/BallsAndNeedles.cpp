@@ -83,16 +83,17 @@ struct Solution {
     if (visited.count(node)) return false;
 
     // mark as visited and visiting
+    // visiting means its on the current stack, which is used to detect cycles
     visited.insert(node);
     visiting.insert(node);
     for (xyz neighbor : adjList[node]) {
       if (neighbor == parentNode) continue; // skip parent because otherwise we would find false cycle
       if (dfs(neighbor, node, adjList)) return true; // if cycle found, return true early
     }
-    // no longer visiting
+    // no longer visiting (because we are backtracking)
     visiting.erase(node);
 
-    return false; // no cycle
+    return false; // no cycle so far
   }
 
   // 2d version
@@ -124,13 +125,12 @@ int main() {
 }
 
 /*
-find if cycle exists (in shadow)
+goal: 
+need to find whether or not there are true cycles
+and whether or not there are shadow cycles
 
 if two nodes have same shadow position, they cannot be both used because all shadows have to be distinct
 therefore, two nodes with the same shadow can be treated as the same node
-
-we actually need to find whether or not there are true cycles
-and whether or not there are shadow cycles
 
 every node is represented by xyz 
 adjacency list:
@@ -148,7 +148,7 @@ how to find cycles:
     then when we go to new nodes, if one is already visited, we skip it
     BUT if one is also already in "visiting", then we have a cycle
       we can just break because we are looking for cycles
-    but yeah otherwise we can just call dfs on that node (maybe we have a recursive function we are working with)
+    but yeah otherwise we can just call dfs on that node (recursive function)
     and we also mark visiting to true for that current node
     and visited is true ofc
     and then when we have finally gone in all directions possible

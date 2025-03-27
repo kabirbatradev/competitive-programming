@@ -45,5 +45,25 @@ output format:
   output SCC in sorted order
   output all SCCs in sorted order (just compare their lexicographically smallest activity)
     note that all SCCs are disjoint
+
+
+how to identify SCC: (tarjan's)
+  for every node
+    give a discovery number (skip this node if it alr has discovery number)
+    identify the smallest discovery number that this node can reach
+      by default, this should be itself
+  as you dfs:
+    update current node's "smallest reachable discovery number" with smallestReach of neighbor after dfs(neighbor)
+      only update if its better
+    if neighbor is in the current dfs stack, then we have a cycle, so update smallestReachable with 
+      the discovery number of the neighbor (if its better)
+    also add current node to a stack, and add to "visiting" for O(1) check if its in the stack 
+    no need for global visited bc we have discovery number
+  while backtracking:
+    if node's smallestReachable is itself, then it is the "root of an scc",
+    so pop from the stack until this node is reached (inclusive), 
+    and everything that was in the stack is part of our SCC
   
+
+
 */

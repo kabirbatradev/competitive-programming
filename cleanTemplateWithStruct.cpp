@@ -1,3 +1,6 @@
+// Author: Kabir Batra
+// It is okay to share my code for educational purposes
+
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;

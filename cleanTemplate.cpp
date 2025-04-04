@@ -2,12 +2,11 @@
 // It is okay to share my code for educational purposes
 
 #include<bits/stdc++.h>
-// using ll = long long;
-#define int long long // all ints are replaced with long longs
+using ll = long long;
+// ll is kinda op pog use it ALWAYS
 using namespace std;
 
-// use unsigned to work around int = long
-unsigned main() {
+int main() {
   std::ios::sync_with_stdio(false);
   cin.tie(0); cout.tie(0);
   // cin.exceptions(cin.failbit);

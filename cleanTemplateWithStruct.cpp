@@ -19,7 +19,7 @@ struct Solution {
 int main() {
   std::ios::sync_with_stdio(false);
   cin.tie(0); cout.tie(0);
-  cin.exceptions(cin.failbit);
+  // cin.exceptions(cin.failbit); // idk what this does but it prevents me from doing while (cin >> n)
   // cout.precision(1); // # decimal places
   // cout << fixed; // force precision decimal places
   Solution s;

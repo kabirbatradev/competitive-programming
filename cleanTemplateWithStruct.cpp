@@ -4,6 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 using ll = long long;
+// ll is kinda op pog use it ALWAYS
 
 struct Solution {
   Solution() {

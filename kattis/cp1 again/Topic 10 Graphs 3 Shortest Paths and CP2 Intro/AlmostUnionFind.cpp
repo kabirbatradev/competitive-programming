@@ -1,4 +1,4 @@
-// Author: Kabir Batra
+// Author: Kabir Batra, Jiali Shi
 // It is okay to share my code for educational purposes
 
 #include <bits/stdc++.h>
@@ -11,14 +11,14 @@ using ll = long long;
 // https://github.com/stevenhalim/cpbook-code/blob/master/ch2/ourown/unionfind_ds.cpp
 
 // modification: 
-  // create dummy nodes too
+// create dummy nodes for each original node, and add move function
 typedef vector<int> vi;
 
 class UnionFind {                                // OOP style
 private:
   vi p;
   // vi rank;
-  vi setSize;                           // vi p is the key part
+  vi setSize;                           
 public:
   int N;
   vector<ll> sumOfSet; // need longs here!
@@ -29,7 +29,7 @@ public:
 
     p.assign(2*N, 0); // double the size
 
-    // make normal node parent be the dummy node
+    // make normal node parent be the dummy node (simulate union)
     for (int i = 0; i < N; ++i) {
       p[i] = N + i;
     }
@@ -38,12 +38,6 @@ public:
     for (int i = N; i < 2*N; ++i) {
       p[i] = i;
     }
-
-    // // initialize all nodes as normal
-    // for (int i = 0; i < 2*N; ++i) {
-    //   p[i] = i;
-    // }
-
 
     // rank.assign(2*N, 0);                           // optional speedup
     setSize.assign(2*N, 1);                        // optional feature
@@ -54,30 +48,11 @@ public:
     sumOfSet.assign(2*N, 0);
     numElements.assign(2*N, 0); // size, but it doesnt include dummy nodes
 
-    // initialze sum of every sum
-    // dummy nodes have sum of 0
-    // actual nodes have actual sum
-
-    // // normal nodes:
-    // for (int i = 0; i < N; ++i) {
-    //   sumOfSet[i] = i;
-    // }
-
-    // // dummy nodes have no sum
-    // for (int i = N+1; i < 2*N; ++i) {
-    //   sumOfSet[i] = 0;
-    // }
-
     // for every normal node, the parent sum should be the value of that node
     for (int i = 0; i < N; ++i) {
       sumOfSet[N+i] = i+1; // node value is off by one
       numElements[N+i] = 1;
     }
-
-    // // union all of the normal nodes with their respective dummy parent nodes
-    // for (int i = 0; i < N; ++i) {
-    //   unionSet(i, i+N); // union the node with its dummy parent
-    // }
 
   }
 

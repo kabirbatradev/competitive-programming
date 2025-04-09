@@ -2,8 +2,8 @@
 // It is okay to share my code for educational purposes
 
 #include<bits/stdc++.h>
-using ll = long long;
-// ll is kinda op pog use it ALWAYS
+// using ll = long long;
+#define int long long // replace all "int" with "long long"
 using namespace std;
 
 int main() {

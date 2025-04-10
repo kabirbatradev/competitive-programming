@@ -10,7 +10,7 @@
         "-g",
         "-Wall",            // Enables most compiler warnings
         "-Wextra",          // Enables extra warnings
-        "-Werror",          // Treats warnings as errors
+        // "-Werror",          // Treats warnings as errors
         "-o",
         "${fileDirname}/${fileBasenameNoExtension}.out"
       ],

@@ -8,6 +8,9 @@
         "${file}",
         "-std=c++23",
         "-g",
+        "-Wall",            // Enables most compiler warnings
+        "-Wextra",          // Enables extra warnings
+        "-Werror",          // Treats warnings as errors
         "-o",
         "${fileDirname}/${fileBasenameNoExtension}.out"
       ],

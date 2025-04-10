@@ -5,6 +5,9 @@
 #define int long long // replace all "int" with "long long"
 using namespace std;
 
+int dx[4] = {0, 0, -1, 1};
+int dy[4] = {-1, 1, 0, 0};
+
 struct Solution {
   Solution() {
     int n; cin >> n;
@@ -22,5 +25,8 @@ signed main() {
   // cin.exceptions(cin.failbit); // idk what this does but it prevents me from doing while (cin >> n)
   // cout.precision(1); // # decimal places
   // cout << fixed; // force precision decimal places
-  Solution s;
+
+  // int t; cin >> t;
+  // for (int i = 0; i < t; i++) 
+    Solution s;
 }

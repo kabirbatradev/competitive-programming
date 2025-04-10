@@ -9,21 +9,22 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "${fileDirname}/${fileBasenameNoExtension}.out",
-      "args": [],
+      "args": ["<", "in"],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [],
       "externalConsole": false,
       "MIMode": "gdb",
-      "miDebuggerPath": "C:/msys64/mingw64/bin/gdb.exe ", // extra space because its being weird
-      "preLaunchTask": "C/C++: g++.exe build active file" // Link to build task
+      // "miDebuggerPath": "C:/msys64/mingw64/bin/gdb.exe ", // extra space because its being weird
+      "preLaunchTask": "C/C++: g++.exe build active file", // Link to build task
+      
     },
     {
       "name": "Run Active File",
       "type": "cppdbg",
       "request": "launch",
       "program": "${fileDirname}/${fileBasenameNoExtension}.out",
-      "args": [],
+      "args": ["<", "in"],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [],

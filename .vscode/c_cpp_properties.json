@@ -11,10 +11,21 @@
                 "_UNICODE"
             ],
             "windowsSdkVersion": "10.0.19041.0",
-            "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
+            "compilerPath": "C:/msys64/mingw64/bin/g++.exe", // for windows (not wsl)
             "cStandard": "${default}",
             "cppStandard": "c++23",
             "intelliSenseMode": "windows-gcc-x64"
+        },
+        {
+            "name": "WSL",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/g++",
+            "cStandard": "c17",
+            "cppStandard": "c++23",
+            "intelliSenseMode": "gcc-x64"
         }
     ],
     "version": 4

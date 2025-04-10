@@ -38,7 +38,9 @@
 *.app
 
 extra
-.vscode/*
+# .vscode/*
+# .vscode/settings.json
+.vscode/extensions.json
 
 input
 in

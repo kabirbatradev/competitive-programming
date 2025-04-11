@@ -1,9 +1,10 @@
 #include <bits/stdc++.h>
 #define int long long
+#define INT_MAX LLONG_MAX
 using namespace std;
 
-int dx[8] = {0, 0, -1, 1, -1, -1, 1, 1};
-int dy[8] = {-1, 1, 0, 0, -1, 1, -1, 1};
+// int dx[8] = {0, 0, -1, 1, -1, -1, 1, 1};
+// int dy[8] = {-1, 1, 0, 0, -1, 1, -1, 1};
 
 struct Solution {
   Solution() {

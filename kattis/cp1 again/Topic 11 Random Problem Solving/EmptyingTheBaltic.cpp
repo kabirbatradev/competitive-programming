@@ -15,7 +15,8 @@ struct Solution {
     int h, w; cin >> h >> w;
 
     // read in the grid
-    vector<vector<int>> grid(h, vector<int>(w));
+    // vector<vector<int>> grid(h, vector<int>(w));
+    int grid[500][500];
     for (int i = 0; i < h; i++) {
       for (int j = 0; j < w; j++) {
         cin >> grid[i][j];
@@ -32,7 +33,8 @@ struct Solution {
     pq.push({weight, r, c});
 
     // visited grid to not drain from same cell twice
-    vector<vector<bool>> visited(h, vector<bool>(w, false));
+    // vector<vector<bool>> visited(h, vector<bool>(w, false));
+    bool visited[500][500] = {}; // everything 0
 
     int totalWater = 0;
 

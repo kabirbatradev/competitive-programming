@@ -1,6 +1,7 @@
 #include <bits/stdc++.h>
 #define int long long
-#define INT_MAX LLONG_MAX
+// #define INT_MAX LLONG_MAX
+#define INF 1e18
 using namespace std;
 
 // int dx[8] = {0, 0, -1, 1, -1, -1, 1, 1};
@@ -8,11 +9,13 @@ using namespace std;
 
 struct Solution {
   Solution() {
-    int n; cin >> n;
+    // int n; cin >> n;
 
-    for (int i = 0; i < n; i++) {
+    // for (int i = 0; i < n; i++) {
 
-    }
+    // }
+
+    cout << INF << endl;
   }
 };
 

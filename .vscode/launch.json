@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug Active File",
+      "name": "Debug Active File with 'in' input file",
       "type": "cppdbg",
       "request": "launch",
       "program": "${fileDirname}/${fileBasenameNoExtension}.out",
@@ -20,11 +20,40 @@
       
     },
     {
-      "name": "Run Active File",
+      "name": "Run Active File with 'in' input file",
       "type": "cppdbg",
       "request": "launch",
       "program": "${fileDirname}/${fileBasenameNoExtension}.out",
       "args": ["<", "in"],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "externalConsole": false,
+      // "MIMode": "",
+      // "miDebuggerPath": "",
+      "preLaunchTask": "C/C++: g++.exe build active file" // Link to build task
+    },
+    {
+      "name": "Debug Active File",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${fileDirname}/${fileBasenameNoExtension}.out",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      // "miDebuggerPath": "C:/msys64/mingw64/bin/gdb.exe ", // extra space because its being weird
+      "preLaunchTask": "C/C++: g++.exe build active file", // Link to build task
+      
+    },
+    {
+      "name": "Run Active File",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${fileDirname}/${fileBasenameNoExtension}.out",
+      "args": [],
       "stopAtEntry": false,
       "cwd": "${fileDirname}",
       "environment": [],

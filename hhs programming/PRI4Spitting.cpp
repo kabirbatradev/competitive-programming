@@ -80,15 +80,31 @@ signed main() {
 using namespace std;
 
 signed main() {
+
+  // test cases
   int t; cin >> t;
   for (int i = 0; i < t; i++) {
+
+    // n is num of camels
     int n; cin >> n;
+
+    // store (position, spat at position) in map
     map<int, int> m;
-    bool found = false;
+    
+    // populate map
     for (int j = 0; j < n; j++) {
       int x, d; cin >> x >> d;
+
+      // this never happens (proof by submission)
+      if (m.count(x)) {
+        cout << "two camels in the same spot should not be possible" << endl;
+      }
+
       m[x] = x+d;
     }
+
+    // for each camel, check if its reverse exists
+    bool found = false;
     for (auto [x, x2] : m) {
       auto it = m.find(x2);
       if (it != m.end() && it->second == x) {

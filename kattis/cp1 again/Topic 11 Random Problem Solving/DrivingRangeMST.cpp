@@ -21,7 +21,9 @@ private:
   int numSets;
 public:
   UnionFind(int N) {
-    p.assign(N, 0); for (int i = 0; i < N; ++i) p[i] = i; // initialze parents to self
+    // p.assign(N, 0); for (int i = 0; i < N; ++i) p[i] = i; // initialze parents to self
+    p.resize(N);
+    iota(p.begin(), p.end(), 0);
     // rank.assign(N, 0);                           // optional speedup
     setSize.assign(N, 1);                        // optional feature
     numSets = N;                                 // optional feature

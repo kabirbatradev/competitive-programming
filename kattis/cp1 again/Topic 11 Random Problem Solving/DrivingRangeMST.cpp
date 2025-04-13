@@ -16,13 +16,13 @@ typedef vector<int> vi;
 class UnionFind {                                // OOP style
 private:
   vi p; // p means parents
-  vi rank;
+  // vi rank;
   vi setSize;                           
   int numSets;
 public:
   UnionFind(int N) {
     p.assign(N, 0); for (int i = 0; i < N; ++i) p[i] = i; // initialze parents to self
-    rank.assign(N, 0);                           // optional speedup
+    // rank.assign(N, 0);                           // optional speedup
     setSize.assign(N, 1);                        // optional feature
     numSets = N;                                 // optional feature
   }
@@ -46,13 +46,13 @@ public:
 
     // y should be the parent
 
-    if (rank[x] > rank[y]) swap(x, y);           // keep x 'shorter' than y
-    p[x] = y;                                    // set x under y
-    if (rank[x] == rank[y]) ++rank[y];           // optional speedup
+    // if (rank[x] > rank[y]) swap(x, y);           // keep x 'shorter' than y
+    // p[x] = y;                                    // set x under y
+    // if (rank[x] == rank[y]) ++rank[y];           // optional speedup
     
     // can also consider union by size instead of rank:
-    // if (setSize[x] > setSize[y]) swap(x, y);
-    // p[x] = y;
+    if (setSize[x] > setSize[y]) swap(x, y);
+    p[x] = y;
 
     setSize[y] += setSize[x];                    // combine set sizes at y
     --numSets;                                   // a union reduces numSets

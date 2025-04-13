@@ -82,14 +82,16 @@ struct Solution {
 
       UF.unionSet(a, b);
       lastWeightUsed = weight;
+      
+      // short circuit return early
+      if (UF.numDisjointSets() == 1) {
+        cout << lastWeightUsed << '\n';
+        return;
+      }
     }
 
-    if (UF.numDisjointSets() != 1) {
-      cout << "IMPOSSIBLE" << '\n';
-      return;
-    }
-
-    cout << lastWeightUsed << '\n';
+    // guaranteed we failed if we got here
+    cout << "IMPOSSIBLE" << '\n';
   }
 };
 

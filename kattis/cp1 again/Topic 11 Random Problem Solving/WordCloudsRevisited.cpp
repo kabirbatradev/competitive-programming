@@ -25,20 +25,21 @@ struct Solution {
       blocks[i] = {w, h};
     }
 
-    int result = completeSearch(0, 0, 0, 0);
+    int result = completeSearch(0, 0, 0);
     cout << result << '\n';
   }
 
-  map<tuple<int,int,int,int>, int> cache;
+  map<tuple<int,int,int>, int> cache;
 
   // return minimized total height of rows
-  int completeSearch(int currentBlockIndex, int currentRowHeight, int currentRowWidth, int totalPrevRowHeights) {
+  // actually lets just return the minimized row height of current row and future rows
+  int completeSearch(int currentBlockIndex, int currentRowHeight, int currentRowWidth) {
     if (currentBlockIndex == n) {
-      return totalPrevRowHeights + currentRowHeight;
+      return currentRowHeight;
     }
 
     // if in cache, then return result immediately
-    auto it = cache.find({currentBlockIndex, currentRowHeight, currentRowWidth, totalPrevRowHeights});
+    auto it = cache.find({currentBlockIndex, currentRowHeight, currentRowWidth});
     if (it != cache.end()) {
       return it->second;
     }
@@ -53,7 +54,7 @@ struct Solution {
     if (currentRowWidth + currentWidth <= c) {
       if (currentRowHeight >= currentHeight) noBrainerSameRow = true;
       int result = completeSearch(currentBlockIndex+1, max(currentRowHeight, currentHeight), 
-        currentRowWidth + currentWidth, totalPrevRowHeights
+        currentRowWidth + currentWidth
       );
       bestCase = min(bestCase, result);
     }
@@ -64,13 +65,14 @@ struct Solution {
       // new row is just this block
       // old total of prev rows should include the "current row"
       int result = completeSearch(currentBlockIndex+1, currentHeight, 
-        currentWidth, totalPrevRowHeights + currentRowHeight
+        currentWidth
       );
+      result += currentRowHeight; // factor in the cost of what was the current row
       bestCase = min(bestCase, result);
     }
 
     // add to cache before returning
-    cache[{currentBlockIndex, currentRowHeight, currentRowWidth, totalPrevRowHeights}] = bestCase;
+    cache[{currentBlockIndex, currentRowHeight, currentRowWidth}] = bestCase;
 
     return bestCase;
 
@@ -123,4 +125,11 @@ cache would be a map from 3 int tuple to one int
 It TLEs even with the cache
 that means DP doesnt work? we have to do greedy?
 
+better cache: only cache:
+  currentBlockIndex
+  currentRowHeight
+  currentRowWidth
+no need to cache with "total row height so far" because all future decisions made are the same so its not a defining state variable
+  now my solution detects more overlapping subproblems
+it passes yay!
 */

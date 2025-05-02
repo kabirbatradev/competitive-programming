@@ -11,13 +11,21 @@ public:
             }
         }
 
-        
         // while new stuff still just fell
         while (!q.empty()) {
 
-
             // process all of the falling dominoes of this second
-            unordered_map<int, pair<bool, bool>> fallingNeighbors;
+            // second queue is for future things
+            // but also we want to skip stuff that is already marked?
+            // i guess the second queue can just be indices
+            // and we skip if already marked:
+            // we use the value in the dominoes thing
+                // can set it to . + 1 for left
+                // . + 2 for right
+                // if its . + 3, then it was both so we are cooked (skip)
+
+            queue<int> secondQueue;
+            
             while (!q.empty()) {
                 int index = q.front(); q.pop();
                 char dir = dominoes[index];
@@ -26,34 +34,48 @@ public:
                 if (dir == 'L') {
                     int neighbor = index-1;
                     // check in range and is standing (not already fallen)
-                    if (0 <= neighbor && dominoes[neighbor] == '.') {
+                    if (0 <= neighbor && dominoes[neighbor] != 'R' && dominoes[neighbor] != 'L') {
                         // mark as falling left
-                        fallingNeighbors[neighbor].first = true; 
+                        // fallingNeighbors[neighbor].first = true; 
+                        dominoes[neighbor]++;
+                        secondQueue.push(neighbor);
                     }
                 }
                 else {
                     int neighbor = index+1;
                     // check in range and is standing (not already fallen)
-                    if (neighbor < n && dominoes[neighbor] == '.') {
+                    if (neighbor < n && dominoes[neighbor] != 'R' && dominoes[neighbor] != 'L') {
                         // mark as falling right
-                        fallingNeighbors[neighbor].second = true; 
+                        // fallingNeighbors[neighbor].second = true; 
+                        dominoes[neighbor] += 2;
+                        secondQueue.push(neighbor);
                     }
                 }
+                
             }
 
             // now go through all falling neighbors, and skip the ones
             // that are falling in both directions
-            for (auto [index, dirPair] : fallingNeighbors) {
-                auto [left, right] = dirPair;
-                if (left && right) {
+            while (!secondQueue.empty()) {
+                int index = secondQueue.front(); secondQueue.pop();
+                // get the direction falling from dominoes
+                if (dominoes[index] == '.' + 3) {
+                    // both directions case 
+                    dominoes[index] = '.'; // reset it though
                     continue;
                 }
-
-                // update the state, and add to the queue
-                dominoes[index] = left ? 'L' : 'R';
-                q.push(index);
+                else if (dominoes[index] == '.' + 1) {
+                    // left case
+                    dominoes[index] = 'L';
+                    q.push(index);
+                }
+                else if (dominoes[index] == '.' + 2) {
+                    // right case
+                    dominoes[index] = 'R';
+                    q.push(index);
+                }
+                // other case is its already set, so do nothing
             }
-
 
         }
 
